@@ -2,7 +2,6 @@
 .idea/
 nodemodules/
 build/
-public/
 /dist/
 .env
 .DSStore
