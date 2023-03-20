@@ -1,6 +1,6 @@
-import React from 'react';
+import styles from './formField.module.css'
 
-const Form = ({title, name, pattern, register, errors, type}) => {
+export const FormField = ({title, name, pattern, register, errors, type}) => {
     return (
         <div>
             <label>{title}</label>
@@ -18,7 +18,5 @@ const Form = ({title, name, pattern, register, errors, type}) => {
                 )}
             </div>
         </div>
-    );
-};
-
-export default Form;
+    )
+}

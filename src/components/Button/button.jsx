@@ -1,14 +1,18 @@
 import s from './index.module.css';
 import cn from 'classnames';
 
-function Button({type, children}) {
-    
+function Button({ type, children, className }) {
+
   return (
-    <button className={ cn(s.button, {
+    <button className={cn(
+      s.button,
+      {
         [s.primary]: type === 'primary',
         [s.secondary]: type === 'secondary',
-    })}>
-        {children}
+      },
+      className
+    )}>
+      {children}
     </button>
   )
 }

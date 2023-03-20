@@ -1,61 +1,82 @@
 const onResponse = (res) => {
-	return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+    return res.json();
 }
 
 class Api {
-	constructor({baseUrl, headers}) {
-		this._headers = headers;
-		this._baseUrl = baseUrl;
-	}
-	
-	getProductList() {
-		return fetch(`${this._baseUrl}/products`, {
-			headers: this._headers
-		}).then(onResponse)
-	}
-	
-	getUserInfo() {
-		return fetch(`${this._baseUrl}/users/me`, {
-			headers: this._headers
-		}).then(onResponse)
-	}
-	
-	getProductById(idProduct) {
-		return fetch(`${this._baseUrl}/products/${idProduct}`, {
-			headers: this._headers
-		}).then(onResponse)
-	}
-	
-	setUserInfo(dataUser) {
-		return fetch(`${this._baseUrl}/users/me`, {
-			method: 'PATCH',
-			headers: this._headers,
-			body: JSON.stringify(dataUser)
-		}).then(onResponse)
-	}
-	
-	search(searchQuery) {
-		return fetch(`${this._baseUrl}/products/search?query=${searchQuery}`, {
-			headers: this._headers
-		}).then(onResponse)
-	}
-	
-	changeLikeProduct(productId, isLike) {
-		return fetch(`${this._baseUrl}/products/likes/${productId}`, {
-			method: isLike ? "DELETE" : "PUT",
-			headers: this._headers
-		}).then(onResponse)
-	}
+    constructor() {
+        this._baseUrl = 'https://api.react-learning.ru';
+        this._headers = {
+            'content-type': 'application/json'  
+        }
+    }
+
+    setToken(token) {
+        this._headers = {
+            'content-type': 'application/json',
+            Authorization: token       
+        }
+    }
+
+    getToken() {
+        return this._headers.Authorization
+    }
+
+    getProductList() {
+        return fetch(`${this._baseUrl}/products`, {
+            headers: this._headers
+        }).then(onResponse)
+    }
+
+    signIn(email, password) {
+        return fetch(`${this._baseUrl}/signin`, {
+            method: 'POST',
+            headers: this._headers,
+            body: JSON.stringify({email, password})
+        }).then(onResponse)
+    }
+
+    signUp(email, group, password) {
+        return fetch(`${this._baseUrl}/signup`, {
+            method: 'POST',
+            headers: this._headers,
+            body: JSON.stringify({email, group, password})
+        }).then(onResponse)
+    }
+
+    getUserInfo() {
+        return fetch(`${this._baseUrl}/users/me`, {
+            headers: this._headers
+        }).then(onResponse)
+    }
+
+    getProductById(idProduct) {
+        return fetch(`${this._baseUrl}/products/${idProduct}`, {
+            headers: this._headers
+        }).then(onResponse)
+    }
+
+    setUserInfo(dataUser) {
+        return fetch(`${this._baseUrl}/users/me`, {
+            method: 'PATCH',
+            headers: this._headers,
+            body: JSON.stringify(dataUser)
+        }).then(onResponse)
+    }
+
+    search(searchQuery, page, limit) {
+        return fetch(`${this._baseUrl}/products?page=${page}&limit=${limit}&query=${searchQuery}`, {
+            headers: this._headers
+        }).then(onResponse)
+    }
+
+    changeLikeProduct(productId, isLike) {
+        return fetch(`${this._baseUrl}/products/likes/${productId}`, {
+            method: isLike ? "DELETE" : "PUT",
+            headers: this._headers
+        }).then(onResponse)
+    }
 }
 
-const config = {
-	baseUrl: 'https://api.react-learning.ru',
-	headers: {
-		'content-type': 'application/json',
-		Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UxMjZhZTU5Yjk4YjAzOGY3N2IyMTQiLCJncm91cCI6Imdyb3VwLTEwIiwiaWF0IjoxNjc1NzAwMzMwLCJleHAiOjE3MDcyMzYzMzB9.xaqaQlWEpBsjkmY7C7UhkMYBviBFvk_krC66-PEhUSQ'
-	}
-}
-
-const api = new Api(config);
+const api = new Api();
 
 export default api;

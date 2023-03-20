@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 export const useApi = (handler) => {
     const [data, setData] = useState(null);
@@ -8,17 +8,17 @@ export const useApi = (handler) => {
     useEffect(() => {
         setLoading(true);
         handler()
-            .then((result)=> {
+            .then((result) => {
                 setData(result);
             })
-            .catch((err)=>{
+            .catch((err) => {
                 setError(err);
             })
-            .finally(()=>{
+            .finally(() => {
                 setLoading(false)
             })
     }, [handler])
 
 
-    return { data, setData, loading, error}    
+    return {data, setData, loading, error}
 }

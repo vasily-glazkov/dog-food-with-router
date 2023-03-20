@@ -3,10 +3,11 @@ import cn from 'classnames';
 import { ReactComponent as Save } from './img/save.svg';
 import truck from './img/truck.svg';
 import quality from './img/quality.svg';
-
+import AppComments from './AppComments';
+import {useState} from 'react';
 import { calcDiscountPrice, isLiked, createMarkup } from '../../utils/product';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext} from 'react';
 import { UserContext } from '../../context/userContext';
 import { ContentHeader } from '../ContentHeader/content-header';
 
@@ -17,6 +18,19 @@ export const Product = ({ onProductLike, pictures, likes = [], reviews, tags, na
     const discount_price = calcDiscountPrice(price, discount);
     const isLike = isLiked(likes, currentUser?._id);
     const desctiptionHTML = createMarkup(description);
+
+    {/* Comments23 hooks and logiq*/}
+	const [comment, setComment] = useState('');
+	//ListOfComments logiq
+	const [comments, setComments] = useState([]);	
+	const onClickHandler = () => {
+		setComments((comments) => [...comments, comment]);
+	};
+	const onChangeHandler = (e) => {
+		setComment(e.target.value);
+	};
+    {/* Comments23 */}
+
     return (
     <>
         <ContentHeader title={name}>
@@ -90,9 +104,34 @@ export const Product = ({ onProductLike, pictures, likes = [], reviews, tags, na
 							эффект зубной щетки, лучше всего очищает клыки собак.
 						</p>
 						<p>Следует учесть высокую калорийность продукта.</p>
+
+                    
+
 					</div>
 				</div>
+                {/* Comments23 */}
+                <h2 className={s.title}>Отзывы наших покупателей</h2>
+                <div className='main-container-comment'>
+		{comments.map((text) => (
+			<div className='comment-container'>{text}</div>
+		))}
+		{/* Будет выводится над формой после нажатия кнопки */}
+		
 
+		{/* Здесь то, что мы вводим в качестве текста для комментария */}
+		<div className='comment-flexbox'>
+		<h3 className={s.title}>Оставить комментарий</h3>
+        {/* <h3 className='comment-text'>Оставить комментарий</h3> */}
+		<textarea 
+        value={comment}
+        onChange={onChangeHandler}
+        className='comment-inputbox' 
+        placeholder='Введите свой комментарий'
+		/>
+		<button onClick={onClickHandler} className='comment-button'>Отправить</button>
+		</div>
+	</div>  
+                    {/* Comments23 */}
         </div>
     </>
     )
